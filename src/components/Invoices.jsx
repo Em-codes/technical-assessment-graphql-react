@@ -1,36 +1,23 @@
-import { useQuery } from '@apollo/client'
 import Invoice from './Invoice'
-import { GET_INVOICES } from '../queries/invoiceQueries'
+import SortByDate from './filters/SortByDate'
+import { useState } from 'react'
+import SortByName from './filters/SortByName'
+import SortByPaymentStatus from './filters/SortByPayementStatus'
 
-const Invoices = ({ searchTerm }) => {
-
-  const { loading, error, data } = useQuery(GET_INVOICES)
-  if (loading) return 'Loading...'
-  if (error) return <p>Something went wrong</p>
-
-
-  const groups = (data.invoices).reduce((groups, invoice) => {
-    const date = invoice.createdAt.split('T')[0];
-    if (!groups[date]) {
-      groups[date] = [];
-    }
-    groups[date].push(invoice);
-    return groups;
-  }, {});
-
-  const groupArrays = Object.keys(groups).map((date) => {
-    return {
-      date,
-      groupedInvoices: groups[date]
-    };
-  });
-
+const Invoices = ({ searchTerm, groupArrays, loading, error }) => {
+  const [allData] = useState(groupArrays)
+  const [filteredData, setFilteredData] = useState(allData)
+  // console.log(filteredData)
+  
 
   return (
     <>
+    <SortByDate filteredData={allData} setFilteredData={setFilteredData}/>
+    {/* <SortByPaymentStatus filteredData={filteredData} setFilteredData={setFilteredData} /> */}
+    {/* <SortByName filteredData={filteredData} setFilteredData={setFilteredData} /> */}
       {!loading && !error &&
         <div>
-          {groupArrays.map((invoice, i) => (
+          {filteredData.map((invoice, i) => (
             <Invoice invoice={invoice && invoice} key={i} searchTerm={searchTerm} />
           ))}
         </div>

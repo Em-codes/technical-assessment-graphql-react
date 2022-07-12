@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react'
 import SortByDate from './filters/SortByDate';
 
 const Invoice = ({ invoice, searchTerm }) => {
-    const [filteredData, setFilteredData] = useState(invoice && invoice.groupedInvoices)
+    
+    useEffect(() => {
+        console.log(dpData)
+    }, [])
+
+    const [dpData, setDpData] = useState(invoice && invoice.groupedInvoices)
 
     useEffect(() => {
         let result = [];
@@ -13,11 +18,11 @@ const Invoice = ({ invoice, searchTerm }) => {
             val.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
             val.paymentStatus.toLowerCase().includes(searchTerm.toLowerCase())
         )
-        setFilteredData(result)
+        setDpData(result)
     }, [searchTerm])
 
-    const renderPurchased = filteredData && filteredData.map((xy) => (
-        xy.items.map((item, i) => (
+    const renderPurchased = dpData && dpData.map((val) => (
+        val.items.map((item, i) => (
             <div key={i} >
                 <p>{item.itemname}</p>
                 <p>{item.price}</p>
@@ -27,7 +32,7 @@ const Invoice = ({ invoice, searchTerm }) => {
         ))
     ))
 
-    const renderGrouped = filteredData.map((val) => (
+    const renderGrouped = dpData && dpData.map((val) => (
         <div className='invoice' key={val.id}>
             <p>#{val.id}</p>
             <p>{val.firstName}</p>
@@ -45,8 +50,8 @@ const Invoice = ({ invoice, searchTerm }) => {
 
     function totalAmount() {
         let total = 0;
-        filteredData && filteredData.map((xy) => (
-            xy.items.forEach((item, i) => {
+        dpData && dpData.map((val) => (
+            val.items.forEach((item, i) => {
                 total += item.price * item.quantity;
             })
         ))
@@ -61,13 +66,16 @@ const Invoice = ({ invoice, searchTerm }) => {
 
     return (
         <div>
-            {/* <SortByDate filteredData={filteredData} setFilteredData={setFilteredData} /> */}
+            {/* <SortByDate dpData={dpData} setDpData={setDpData} /> */}
             <p> {invoice.date}</p>
             <div>
-                {filteredData.length ? renderGrouped : `No data found for this search term on ${invoice.date}`}
+                {dpData.length ? renderGrouped : `No data found for this search term on ${invoice.date}`}
+                {/* { renderGrouped } */}
             </div>
         </div>
     )
+
+    
 }
 
 export default Invoice
