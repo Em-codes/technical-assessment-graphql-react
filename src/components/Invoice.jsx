@@ -66,7 +66,7 @@ const Invoice = ({ invoice, searchTerm }) => {
 
     return (
         <div>
-            {/* <SortByDate dpData={dpData} setDpData={setDpData} /> */}
+            <SortByDate dpData={dpData} setDpData={setDpData} />
             <p> {invoice.date}</p>
             <div>
                 {dpData.length ? renderGrouped : `No data found for this search term on ${invoice.date}`}
