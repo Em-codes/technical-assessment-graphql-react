@@ -3,7 +3,6 @@ const express = require('express');
 const { graphqlHTTP } = require('express-graphql')
 const schema = require('./schema/schema')
 const cors = require('cors')
-// const bodyParser = require('body-parser')
 
 
 const app = express();
@@ -29,4 +28,4 @@ process.on("unhandledRejections", (err, promise) => {
     server.close(() => process.exit(1));
 });
 
-// git remote add origin https://github.com/Em-codes/technical-assessment-graphql-react.git
+//

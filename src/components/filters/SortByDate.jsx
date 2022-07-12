@@ -1,10 +1,13 @@
 import React from 'react';
 import SelectBox from './SelectBox';
-// import useAxiosFetch from '../../utils/useAxiosFetch';
+import { GET_INVOICES } from '../../queries/invoiceQueries'
+import { useQuery } from '@apollo/client'
 
-const SortByDate = ({ templates, setTemplates }) => {
-    // const { data } = useAxiosFetch('https://front-end-task-dot-result-analytics-dot-fpls-dev.uc.r.appspot.com/api/v1/public/task_templates')
-    // const allTemps = data && data
+
+const SortByDate = ({ filteredData, setFilteredData }) => {
+    const { loading, error, data } = useQuery(GET_INVOICES)
+    // const all = data.invoices.map(val => val.groupedInvoices)
+
 
     const options = [
         { option: 'Default'},
@@ -13,17 +16,17 @@ const SortByDate = ({ templates, setTemplates }) => {
     ]
 
     const onClick = (val) => {
-        let sortedTemplates = []
+        let filteredInvoices = []
 
-        const defaultSort = val.option === "Default"
+        // const defaultSort = val.option === "Default"
         const SortByAscendingOrder = val.option === "Ascending"
         const SortByDescendingOrder = val.option === "Descending"
 
-        SortByAscendingOrder && sortedTemplates.push(...templates.sort((a, b) => new Date(a.created) - new Date(b.created)));
-        SortByDescendingOrder &&  sortedTemplates.push(...templates.sort((a, b) => new Date(b.created) - new Date(a.created)));
-        // defaultSort && sortedTemplates.push(...allTemps)
+        SortByAscendingOrder && filteredInvoices.push(...filteredData.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)));
+        SortByDescendingOrder &&  filteredInvoices.push(...filteredData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+        // defaultSort && filteredInvoices.push(...all)
 
-        setTemplates(sortedTemplates)
+        setFilteredData(filteredInvoices)
         
     }
 

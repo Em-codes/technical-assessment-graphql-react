@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import SortByDate from './filters/SortByDate';
 
 const Invoice = ({ invoice, searchTerm }) => {
     const [filteredData, setFilteredData] = useState(invoice && invoice.groupedInvoices)
@@ -53,7 +54,6 @@ const Invoice = ({ invoice, searchTerm }) => {
     }
 
     function formatDate(val) {
-        console.log(new Date(val.createdAt).toLocaleString())
         return (new Date(val.createdAt).toLocaleDateString())
     }
 
@@ -61,6 +61,7 @@ const Invoice = ({ invoice, searchTerm }) => {
 
     return (
         <div>
+            {/* <SortByDate filteredData={filteredData} setFilteredData={setFilteredData} /> */}
             <p> {invoice.date}</p>
             <div>
                 {filteredData.length ? renderGrouped : `No data found for this search term on ${invoice.date}`}

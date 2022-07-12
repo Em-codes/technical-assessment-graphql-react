@@ -10,6 +10,8 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
+
+
 function App() {
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -19,7 +21,7 @@ function App() {
         <div>
           <input type="text"  placeholder={'search item'} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
           <div>
-            <SortByDate />
+            {/* <SortByDate  /> */}
           </div>
          <Invoices searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         </div>
