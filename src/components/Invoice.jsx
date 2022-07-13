@@ -2,12 +2,9 @@ import React, { useEffect, useState } from 'react'
 import SortByDate from './filters/SortByDate';
 
 const Invoice = ({ invoice, searchTerm }) => {
-    
-    useEffect(() => {
-        console.log(dpData)
-    }, [])
+    const [filteredData, setFilteredData] = useState(invoice && invoice.groupedInvoices)
+    const [activeIndex, setActiveIndex] = useState()
 
-    const [dpData, setDpData] = useState(invoice && invoice.groupedInvoices)
 
     useEffect(() => {
         let result = [];
@@ -18,40 +15,79 @@ const Invoice = ({ invoice, searchTerm }) => {
             val.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
             val.paymentStatus.toLowerCase().includes(searchTerm.toLowerCase())
         )
-        setDpData(result)
+
+        setFilteredData(prev => result)
     }, [searchTerm])
 
-    const renderPurchased = dpData && dpData.map((val) => (
+
+    console.log('s', invoice.groupedInvoices)
+
+    const renderPurchased = filteredData && filteredData.map((val) => (
         val.items.map((item, i) => (
-            <div key={i} >
-                <p>{item.itemname}</p>
-                <p>{item.price}</p>
-                <p>{item.quantity}</p>
-                <p>amount: {item.price * item.quantity}</p>
-            </div>
+
+            <tr tr key={i} >
+                <td>{item.itemname}</td>
+                <td>{item.quantity}</td>
+                <td>{item.price}</td>
+                <td>${item.price * item.quantity}</td>
+            </tr >
+
         ))
     ))
 
-    const renderGrouped = dpData && dpData.map((val) => (
-        <div className='invoice' key={val.id}>
-            <p>#{val.id}</p>
+    const renderGrouped = filteredData.map((val, i) => (
+        <div className='single-invoice' key={val.id}>
+            <p className='hash-value'>#{val.id}</p>
+            <p>{formatDate(val)}</p>
             <p>{val.firstName}</p>
             <p>{val.lastName}</p>
-            <p>{val.email}</p>
-            <p>{val.phone}</p>
-            <p>{val.paymentStatus}</p>
-            <div>
-                {renderPurchased}
-                <p>Total: {totalAmount()}</p>
+            <p className='total-amount'>${totalAmount()}</p>
+            <p className={`payment-status ${(val.paymentStatus === "paid") ? "paid-class" : (val.paymentStatus === "pending") ? "pending-class" : (val.paymentStatus === "unpaid") ? "unpaid-class" : null}`}>
+                <span></span>
+                {val.paymentStatus}
+            </p>
+            <div onClick={() => activeIndex === i ? setActiveIndex('') : setActiveIndex(i)}>
+                <div className="three col">
+                    <div className={`${activeIndex === i ? 'hamburger is-active' : 'hamburger'}`} id="hamburger-12">
+                        <span className="line"></span>
+                        <span className="line"></span>
+                        <span className="line"></span>
+                    </div>
+                </div>
             </div>
-            <p>{formatDate(val)}</p>
+
+
+
+            {activeIndex === i &&
+                <div className='more-info'>
+                    <div className='contact-info'>
+                    <p>{val.email}</p>
+                    <p>{val.phone}</p>
+                    </div>
+                    <div className='purchased-container'>
+                        <table>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Sub-Total</th>
+                            </tr>
+                            {renderPurchased}
+                        </table>
+                        <div className='table-footer'>
+                            <h1>Total Amount:</h1> <h1>${totalAmount()}</h1>
+                        </div>
+                    </div>
+
+                </div>
+            }
         </div>
     ))
 
     function totalAmount() {
         let total = 0;
-        dpData && dpData.map((val) => (
-            val.items.forEach((item, i) => {
+        filteredData && filteredData.map((xy) => (
+            xy.items.forEach((item, i) => {
                 total += item.price * item.quantity;
             })
         ))
@@ -65,17 +101,13 @@ const Invoice = ({ invoice, searchTerm }) => {
 
 
     return (
-        <div>
-            <SortByDate dpData={dpData} setDpData={setDpData} />
-            <p> {invoice.date}</p>
+        <div className='single-dataset'>
+            <p className='date'> {invoice.date}</p>
             <div>
-                {dpData.length ? renderGrouped : `No data found for this search term on ${invoice.date}`}
-                {/* { renderGrouped } */}
+                {filteredData.length ? renderGrouped : `No data found for this search term on ${invoice.date}`}
             </div>
         </div>
     )
-
-    
 }
 
 export default Invoice

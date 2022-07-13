@@ -9,12 +9,16 @@ const app = express();
 
 app.use(cors());
 app.use(
-    '/graphql',
+    '/',
     graphqlHTTP({
       schema,
       graphiql: true
     })
   );
+
+//   app.get("/", (req, res) =>
+//   res.json({ success: true, message: "graphql-api is running!" })
+// );
 
 
 

@@ -1,10 +1,9 @@
 import './App.css';
-import Invoices from './components/Invoices';
 import { useState } from 'react';
 import { GET_INVOICES } from './queries/invoiceQueries';
 import { useQuery } from '@apollo/client';
-import SortByDate from './components/filters/SortByDate';
-import DarkMode from './components/darkmode/Darkmode';
+import DarkMode from './components/Header';
+import { ContextData } from './components/ContextData';
 
 
 
@@ -15,7 +14,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('')
 
   const { loading, error, data } = useQuery(GET_INVOICES)
-  if (loading) return 'Loading...'
+  if (loading) return <div className='loader'> <img src="loading-gif-ql.gif" alt="loader" /></div>
   if (error) return <p>Something went wrong</p>
 
 
@@ -37,13 +36,13 @@ function App() {
 
   return (
     <>
-        <div>
-          {/* <DarkMode /> */}
-          <input type="text"  placeholder={'search item'} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-          <div>
-          </div>
-         <Invoices searchTerm={searchTerm} setSearchTerm={setSearchTerm} groupArrays={groupArrays} loading={loading} error={error}/>
-        </div>
+      <section>
+        <DarkMode />
+        <section className='main-wrapper'>
+          <input type="text" className='search-bar' placeholder={'search item'} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+          <ContextData searchTerm={searchTerm} setSearchTerm={setSearchTerm} groupArrays={groupArrays} loading={loading} error={error} />
+        </section>
+      </section>
     </>
   );
 }

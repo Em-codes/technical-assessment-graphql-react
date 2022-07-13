@@ -84,7 +84,7 @@ const invoices = [
         total: "20"
       }
     ],
-    paymentStatus:"paid",
+    paymentStatus:"unpaid",
     createdAt: "2022-07-06T16:23:00.016Z"
   },
 ]

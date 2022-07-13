@@ -20,10 +20,10 @@ const SelectBox = ({ options, newSelected, label, onClick }) => {
 
     return (
         <div className='select-box-wrapper' ref={optionsRef}>
-            <label>{label}</label>
+            <label className='label-tag'>{label}</label>
             <div className='select-box-container' onClick={() => setIsDropped(!isDropped)}>
                 <h5>{selected}</h5>
-                <CaretDown size={32} color="#363030" weight="bold" />
+                <CaretDown size={22} color="#C4C4C4" />
             </div>
 
             {isDropped && <div className='select-dropdown'>
