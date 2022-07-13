@@ -4,6 +4,7 @@ import { GET_INVOICES } from './queries/invoiceQueries';
 import { useQuery } from '@apollo/client';
 import DarkMode from './components/Header';
 import { ContextData } from './components/ContextData';
+import Loader from './components/Loader';
 
 
 
@@ -14,7 +15,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('')
 
   const { loading, error, data } = useQuery(GET_INVOICES)
-  if (loading) return <div className='loader'> <img src="loading-gif-ql.gif" alt="loader" /></div>
+  if (loading) return <Loader />
   if (error) return <p>Something went wrong</p>
 
 
