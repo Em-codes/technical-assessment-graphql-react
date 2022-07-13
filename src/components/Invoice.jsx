@@ -18,7 +18,7 @@ const Invoice = ({ invoice, searchTerm }) => {
         setFilteredData(prev => result)
     }, [searchTerm])
 
-
+ 
     const renderGrouped = filteredData.map((val, i) => (
         <div className='single-invoice' key={val.id}>
             <p className='hash-value'>#{val.id}</p>

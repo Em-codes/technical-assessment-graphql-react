@@ -4,13 +4,10 @@ import './index.css';
 import App from './App';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 
-
-
 const client = new ApolloClient({
   uri: "https://graphql-test-server-api.herokuapp.com",
   cache: new InMemoryCache(),
 })
-
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
