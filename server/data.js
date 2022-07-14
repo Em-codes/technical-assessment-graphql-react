@@ -1,21 +1,5 @@
 const invoices = [
   {
-    id: "DC1458",
-    firstName: "Toyosi",
-    lastName: "Adibe",
-    email: "toyosi@gmail.com",
-    phone: "0892 974 2421",
-    items: [
-      {
-        itemname: "Bedtime Story Book",
-        quantity: "1",
-        price: "20"
-      }
-    ],
-    paymentStatus: "pending",
-    createdAt: "2022-06-25T02:23:00.016Z"
-  },
-  {
     id: "KA1203",
     firstName: "Kingsley",
     lastName: "Iwu",
@@ -94,6 +78,22 @@ const invoices = [
     ],
     paymentStatus: "unpaid",
     createdAt: "2022-07-06T16:23:00.016Z"
+  },
+  {
+    id: "DC1458",
+    firstName: "Toyosi",
+    lastName: "Adibe",
+    email: "toyosi@gmail.com",
+    phone: "0892 974 2421",
+    items: [
+      {
+        itemname: "Bedtime Story Book",
+        quantity: "1",
+        price: "20"
+      }
+    ],
+    paymentStatus: "pending",
+    createdAt: "2022-06-25T02:23:00.016Z"
   },
   {
     id: "OP4834",

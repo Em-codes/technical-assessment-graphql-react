@@ -1,4 +1,3 @@
-import './App.css';
 import { useState } from 'react';
 import { GET_INVOICES } from './queries/invoiceQueries';
 import { useQuery } from '@apollo/client';
