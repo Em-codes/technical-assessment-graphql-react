@@ -6,27 +6,22 @@ import { useQuery } from '@apollo/client'
 
 const SortByName = ({ filteredData, setFilteredData }) => {
     const { loading, error, data } = useQuery(GET_INVOICES)
-    // const all = data.invoices.map(val => val.groupedInvoices)
-
-    // const cc = {...filteredData}
-    // console.log(cc.date)
-
-    const mm = [
-        {name:'emma', state:'imo'},
-        {name:'kekeu', state:'abia'},
-        {name:'popop', state:'uyo'},
-    ]
-    const tt = mm.map((val) => val.groupedInvoices)
-    console.log(...tt)
-
- 
-
 
     const options = [
         { option: 'Default'},
         { option: 'Ascending' },
         { option: 'Descending' },
     ]
+
+    var av = filteredData.map((val) => val.groupedInvoices)
+
+    const gg = av.sort(function(a, b){
+        return a[1].firstName.localeCompare(b[1].firstName);
+    });
+    
+    // console.log(gg);
+
+    // console.log(av)
 
     const onClick = (val) => {
         let filteredInvoices = []
@@ -39,11 +34,11 @@ const SortByName = ({ filteredData, setFilteredData }) => {
         // SortByDescendingOrder &&  filteredInvoices.push(filteredData.date.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
         // defaultSort && filteredInvoices.push(...all)
 
-        SortByAscendingOrder && filteredInvoices.push(...tt.sort((a, b) => ( a.firstName.localeCompare(b.firstName) )))
-        SortByDescendingOrder && filteredInvoices.push(...tt.sort((a, b) => ( b.firstName.localeCompare(a.firstName) )))
+        // SortByAscendingOrder && filteredInvoices.push(...tt.sort((a, b) => ( a.firstName.localeCompare(b.firstName) )))
+        // SortByDescendingOrder && filteredInvoices.push(...tt.sort((a, b) => ( b.firstName.localeCompare(a.firstName) )))
         // defaultSort && filteredInvoices.push(...all)
 
-        setFilteredData(filteredInvoices)
+        // setFilteredData(filteredInvoices)
         
     }
 

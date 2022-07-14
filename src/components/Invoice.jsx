@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import ToggleBtn from './ToggleBtn';
 
-const Invoice = ({ invoice, searchTerm }) => {
-    const [filteredData, setFilteredData] = useState(invoice && invoice.groupedInvoices)
+const Invoice = ({ invoice, searchTerm, setFilteredData }) => {
+
     const [activeIndex, setActiveIndex] = useState()
 
     useEffect(() => {
@@ -14,12 +14,32 @@ const Invoice = ({ invoice, searchTerm }) => {
             val.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
             val.paymentStatus.toLowerCase().includes(searchTerm.toLowerCase())
         )
-
-        setFilteredData(prev => result)
+        
+    
+        const groups = (result).reduce((groups, invoice) => {
+          const date = invoice.createdAt.split('T')[0];
+          if (!groups[date]) {
+            groups[date] = [];
+          }
+          groups[date].push(invoice);
+          return groups;
+        }, {});
+      
+        const groupArrays = Object.keys(groups).map((date) => {
+          return {
+            date,
+            groupedInvoices: groups[date]
+          };
+        });
+    
+        // console.log(groups)
+        // console.log(groupArrays)
+    
+        setFilteredData(prev => groupArrays)
+        console.log(result)
     }, [searchTerm])
 
- 
-    const renderGrouped = filteredData.map((val, i) => (
+    const renderGrouped = invoice && invoice.groupedInvoices.map((val, i) => (
         <div className='single-invoice' key={val.id}>
             <p className='hash-value'>#{val.id}</p>
             <p>{formatDate(val)}</p>
@@ -83,7 +103,7 @@ const Invoice = ({ invoice, searchTerm }) => {
         <div className='single-dataset'>
             <p className='date'> {invoice.date}</p>
             <div>
-                {filteredData.length ? renderGrouped : `No data found for this search term on ${invoice.date}`}
+                {invoice && invoice.groupedInvoices.length ? renderGrouped : `No data found for this search term on ${invoice.date}`}
             </div>
         </div>
     )
