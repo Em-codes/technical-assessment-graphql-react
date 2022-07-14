@@ -1,49 +1,35 @@
+import React, { useState, useEffect } from 'react'
+import SortByDate from './filters/SortByDate'
+import SortByName from './filters/SortByName'
 import Invoice from './Invoice'
 import { useEffect } from 'react';
 
 
-const Invoices = ({ searchTerm, invoice, setFilteredData, setAllData }) => {
+const Invoices = ({ searchTerm, groupArrays, loading, error }) => {
+    const [allData, setAllData] = useState(groupArrays)
+    const [filteredData, setFilteredData] = useState(allData)
 
-  
-    // useEffect(() => {
-    //     let result = [];
-    //     result = invoice && invoice.groupedInvoices.filter((val) =>
-    //         val.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //         val.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //         val.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //         val.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //         val.paymentStatus.toLowerCase().includes(searchTerm.toLowerCase())
-    //     )
-        
-    
-    //     const groups = (result).reduce((groups, invoice) => {
-    //       const date = invoice.createdAt.split('T')[0];
-    //       if (!groups[date]) {
-    //         groups[date] = [];
-    //       }
-    //       groups[date].push(invoice);
-    //       return groups;
-    //     }, {});
-      
-    //     const groupArrays = Object.keys(groups).map((date) => {
-    //       return {
-    //         date,
-    //         groupedInvoices: groups[date]
-    //       };
-    //     });
-    
-    //     // console.log(groups)
-    //     // console.log(groupArrays)
-    
-    //     setFilteredData(prev => groupArrays)
-    //     console.log(result)
-    // }, [searchTerm])
- 
-  return (
-    <>
-      <Invoice invoice={invoice && invoice} searchTerm={searchTerm} setFilteredData={setFilteredData}/>
-    </>
-  ) 
+    return (
+        <>
+            <div className='filter-group'>
+                <SortByDate filteredData={filteredData} allData={allData} setFilteredData={setFilteredData} />
+                <SortByName filteredData={filteredData} allData={allData} setFilteredData={setFilteredData} />
+            </div>
+            {!loading && !error &&
+                <div>
+                    {filteredData.map((invoice, i) => (
+                        <Invoice
+                            setFilteredData={setFilteredData}
+                            setAllData={setAllData}
+                            filteredData={filteredData}
+                            invoice={invoice && invoice}
+                            searchTerm={searchTerm}
+                            allData={allData} />
+                    ))}
+                </div>
+            }
+        </>
+    )
 }
 
 export default Invoices;

@@ -1,50 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import SelectBox from './SelectBox';
-import { GET_INVOICES } from '../../queries/invoiceQueries'
-import { useQuery } from '@apollo/client'
+
+const SortByName = ({ filteredData, allData, setFilteredData }) => {
+    const [el, setEl] = useState('')
+    const [top, setTop] = useState('')
 
 
-const SortByName = ({ filteredData, setFilteredData }) => {
-    const { loading, error, data } = useQuery(GET_INVOICES)
+    useEffect(() => {
+        const p2 = filteredData.map((val) => (val.groupedInvoices)); setEl(...p2)
+        const p8 = filteredData.map((val) => (val.date)); setTop(...p8)
+    }, [])
+
 
     const options = [
-        { option: 'Default'},
-        { option: 'Ascending' },
-        { option: 'Descending' },
+        { option: 'Default' },
+        { option: 'A-Z' },
+        { option: 'Z-A' },
     ]
-
-    var av = filteredData.map((val) => val.groupedInvoices)
-
-    const gg = av.sort(function(a, b){
-        return a[1].firstName.localeCompare(b[1].firstName);
-    });
-    
-    // console.log(gg);
-
-    // console.log(av)
 
     const onClick = (val) => {
         let filteredInvoices = []
 
-        // const defaultSort = val.option === "Default"
-        const SortByAscendingOrder = val.option === "Ascending"
-        const SortByDescendingOrder = val.option === "Descending"
+        const defaultSort = val.option === "Default"
+        const SortByAscendingOrder = val.option === "A-Z"
+        const SortByDescendingOrder = val.option === "Z-A"
 
-        // SortByAscendingOrder && filteredInvoices.push(filteredData.date.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)));
-        // SortByDescendingOrder &&  filteredInvoices.push(filteredData.date.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
-        // defaultSort && filteredInvoices.push(...all)
+        filteredData && SortByAscendingOrder && filteredInvoices.push(...el.sort((a, b) => (a.firstName.localeCompare(b.firstName))))
+        filteredData && SortByDescendingOrder && filteredInvoices.push(...el.sort((a, b) => (b.firstName.localeCompare(a.firstName))))
+        defaultSort && filteredInvoices.push(...allData)
 
-        // SortByAscendingOrder && filteredInvoices.push(...tt.sort((a, b) => ( a.firstName.localeCompare(b.firstName) )))
-        // SortByDescendingOrder && filteredInvoices.push(...tt.sort((a, b) => ( b.firstName.localeCompare(a.firstName) )))
-        // defaultSort && filteredInvoices.push(...all)
+        let arr = [];
+        const obj = { date: top, groupedInvoices: filteredInvoices }
+        defaultSort ? setFilteredData(filteredInvoices) : setFilteredData([...arr, obj])
 
-        // setFilteredData(filteredInvoices)
-        
     }
 
     return (
         <div>
-            <SelectBox options={options} onClick={onClick} newSelected={'Default'} label={'Name'}/>
+            <SelectBox options={options} onClick={onClick} newSelected={'Default'} label={'Name'} />
         </div>
     );
 };

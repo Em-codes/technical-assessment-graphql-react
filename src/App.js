@@ -3,17 +3,12 @@ import { useState } from 'react';
 import { GET_INVOICES } from './queries/invoiceQueries';
 import { useQuery } from '@apollo/client';
 import DarkMode from './components/Header';
-import { ContextData } from './components/ContextData';
+import Invoices from './components/Invoices';
 import Loader from './components/Loader';
-
-
-
-
 
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('')
-
   const { loading, error, data } = useQuery(GET_INVOICES)
   if (loading) return <Loader />
   if (error) return <p>Something went wrong</p>
@@ -40,8 +35,13 @@ function App() {
       <section>
         <DarkMode />
         <section className='main-wrapper'>
-          <input type="text" className='search-bar' placeholder={'search item'} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-          <ContextData searchTerm={searchTerm} setSearchTerm={setSearchTerm} groupArrays={groupArrays} loading={loading} error={error} />
+          <input type="text" className='search-bar' placeholder={'search by name, email & payment status'} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+          <Invoices searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            groupArrays={groupArrays}
+            loading={loading}
+            error={error}
+          />
         </section>
       </section>
     </>
