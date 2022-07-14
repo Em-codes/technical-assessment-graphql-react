@@ -6,11 +6,9 @@ const SelectBox = ({ options, newSelected, label, onClick }) => {
     const [isDropped, setIsDropped] = useState(false)
     const optionsRef = useRef()
 
-
     const renderOptions = options !== null && options.map((val, i) =>
         <h5 key={i} onClick={() => onClick(val, setSelected(val.option), setIsDropped(!isDropped))}>{val.option}</h5>
     )
-
 
     useEffect(() => { document.body.addEventListener('mousedown', handleClickOutside) })
 
@@ -25,7 +23,6 @@ const SelectBox = ({ options, newSelected, label, onClick }) => {
                 <h5>{selected}</h5>
                 <CaretDown size={22} color="#C4C4C4" />
             </div>
-
             {isDropped && <div className='select-dropdown'>
                 {renderOptions}
             </div>
@@ -33,7 +30,6 @@ const SelectBox = ({ options, newSelected, label, onClick }) => {
         </div>
     )
 }
-
 
 
 export default SelectBox

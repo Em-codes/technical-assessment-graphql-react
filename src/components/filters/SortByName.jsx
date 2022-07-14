@@ -1,49 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect }  from 'react';
 import SelectBox from './SelectBox';
-import { GET_INVOICES } from '../../queries/invoiceQueries'
-import { useQuery } from '@apollo/client'
-
-
-const SortByName = ({ filteredData, setFilteredData }) => {
-    const { loading, error, data } = useQuery(GET_INVOICES)
-    // const all = data.invoices.map(val => val.groupedInvoices)
-
-    // const cc = {...filteredData}
-    // console.log(cc.date)
-
-    const mm = [
-        {name:'emma', state:'imo'},
-        {name:'kekeu', state:'abia'},
-        {name:'popop', state:'uyo'},
-    ]
-    const tt = mm.map((val) => val.groupedInvoices)
-    console.log(...tt)
-
  
 
+const SortByName = ({ filteredData, allData, setFilteredData }) => {
+    const [el, setEl] = useState('')
+    const [top, setTop] = useState('')
 
+   
+    useEffect(() => {
+      const p2 = filteredData.map((val) => (val.groupedInvoices)) ; setEl(...p2)
+      const p8 = filteredData.map((val) => (val.date)); setTop(...p8)
+    }, [])
+
+ 
     const options = [
         { option: 'Default'},
-        { option: 'Ascending' },
-        { option: 'Descending' },
+        { option: 'A-Z' },
+        { option: 'Z-A' },
     ]
 
     const onClick = (val) => {
         let filteredInvoices = []
 
-        // const defaultSort = val.option === "Default"
-        const SortByAscendingOrder = val.option === "Ascending"
-        const SortByDescendingOrder = val.option === "Descending"
+        const defaultSort = val.option === "Default"
+        const SortByAscendingOrder = val.option === "A-Z"
+        const SortByDescendingOrder = val.option === "Z-A"
 
-        // SortByAscendingOrder && filteredInvoices.push(filteredData.date.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)));
-        // SortByDescendingOrder &&  filteredInvoices.push(filteredData.date.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
-        // defaultSort && filteredInvoices.push(...all)
+        filteredData && SortByAscendingOrder && filteredInvoices.push(...el.sort((a, b) => ( a.firstName.localeCompare(b.firstName) )))
+        filteredData && SortByDescendingOrder && filteredInvoices.push(...el.sort((a, b) => ( b.firstName.localeCompare(a.firstName) )))
+        defaultSort && filteredInvoices.push(...allData)
 
-        SortByAscendingOrder && filteredInvoices.push(...tt.sort((a, b) => ( a.firstName.localeCompare(b.firstName) )))
-        SortByDescendingOrder && filteredInvoices.push(...tt.sort((a, b) => ( b.firstName.localeCompare(a.firstName) )))
-        // defaultSort && filteredInvoices.push(...all)
-
-        setFilteredData(filteredInvoices)
+        let arr = [];
+        const obj = { date: top, groupedInvoices: filteredInvoices }
+        defaultSort ? setFilteredData(filteredInvoices) : setFilteredData([...arr, obj])
         
     }
 
